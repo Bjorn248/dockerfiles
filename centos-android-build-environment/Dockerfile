@@ -13,18 +13,18 @@ ENV JAVA_HOME /usr/java/jdk1.7.0_79
 RUN yum -y install wget tar expect
 # Install 32-bit libs
 RUN yum -y install zlib.i686 libstdc++.i686 glibc.i686
-RUN cd /opt && wget --output-document=android-sdk.tgz --quiet http://dl.google.com/android/android-sdk_r24.1.2-linux.tgz && tar xzf android-sdk.tgz && rm -f android-sdk.tgz && chown -R root:root android-sdk-linux
+RUN cd /opt && wget --output-document=android-sdk.tgz --quiet https://dl.google.com/android/android-sdk_r24.4.1-linux.tgz && tar xzf android-sdk.tgz && rm -f android-sdk.tgz && chown -R root:root android-sdk-linux
 ENV PATH ${PATH}:/opt/android-sdk-linux/tools:/opt/android-sdk-linux/platform-tools
 COPY tools /opt/tools
 # Install Android Build Tools + Support Library to build the starter app
 RUN ["/opt/tools/android-accept-licenses.sh", "android update sdk -u -a -t tools"]
 RUN ["/opt/tools/android-accept-licenses.sh", "android update sdk -u -a -t platform-tools"]
-RUN ["/opt/tools/android-accept-licenses.sh", "android update sdk -u -a -t build-tools-23.0.0_rc1"]
+RUN ["/opt/tools/android-accept-licenses.sh", "android update sdk -u -a -t build-tools-23.0.0"]
 RUN ["/opt/tools/android-accept-licenses.sh", "android update sdk -u -a -t extra-android-m2repository"]
 RUN ["/opt/tools/android-accept-licenses.sh", "android update sdk -u -a -t extra-android-support"]
 RUN ["/opt/tools/android-accept-licenses.sh", "android update sdk -u -a -t android-22"]
-RUN which adb
-RUN which android
+RUN adb version
+RUN android list sdk
 ENV ANDROID_HOME /opt/android-sdk-linux
 
 # GO to workspace
