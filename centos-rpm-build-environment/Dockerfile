@@ -16,5 +16,7 @@ RUN gpg --keyserver pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4
 RUN mkdir -p /home/centos/rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
 RUN echo '%_topdir %(echo $HOME)/rpmbuild' > /home/centos/.rpmmacros
 
-# COPY kibana-4.1.7-linux-x64.tar.gz /home/centos/rpmbuild/SOURCES
-COPY package.spec /home/centos/rpmbuild/SPECS
+COPY build_specfile.sh /home/centos/build_specfile.sh
+RUN chown -R centos:users /home/centos
+RUN chmod +x /home/centos/build_specfile.sh
+ENTRYPOINT gosu centos /home/centos/build_specfile.sh
